@@ -1,429 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tourist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    
+
 </head>
 
 
 <body class="bg-gray-100">
- <!-- Navbar -->
-<nav class="bg-white shadow-md">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="text-xl font-bold text-gray-800">Chalo Yatri</div>
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">Chalo Yatri</div>
 
-        <!-- Hamburger Menu Button -->
-        <div class="block lg:hidden">
-            <button id="menu-toggle" class="text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Navigation Links -->
-        <ul id="navbar" class="hidden lg:flex space-x-6 font-bold">
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Home</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Tour</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Booking</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Destination</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Blog</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Gallery</a></li>
-            <li><a href="#" class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Contact</a></li>
-        </ul>
-    </div>
-</nav>
-
-<!-- Mobile Menu -->
-<div id="mobile-navbar" class="lg:hidden fixed inset-0 bg-white bg-opacity-90 z-50 hidden">
-    <div class="flex justify-center items-center h-full">
-        <ul class="space-y-6 font-bold text-lg">
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Home</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Tour</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Booking</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Destination</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Blogs</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Gallery</a></li>
-            <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Contact</a></li>
-        </ul>
-    </div>
-</div>
-
-<!-- Mobile Menu Toggle Script -->
-<script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileNavbar = document.getElementById('mobile-navbar');
-    const menuLinks = document.querySelectorAll('#mobile-navbar a');
-
-    // Toggle the mobile menu visibility when hamburger button is clicked
-    menuToggle.addEventListener('click', () => {
-        mobileNavbar.classList.toggle('hidden');
-    });
-
-    // Close the mobile menu when a link is clicked
-    menuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNavbar.classList.add('hidden');
-        });
-    });
-</script>
-
-  <!-- Banner Section -->
-<section class="relative bg-cover bg-center h-screen" style="background-image: url('https://wallpapershome.com/images/pages/ico_h/4062.jpg');">
-    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center text-white px-4">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">Where do you want to go?</h1>
-        <p class="text-lg md:text-xl mb-8">Trips, experiences, and places. All in one service.</p>
-        <div class="w-full max-w-3xl p-6 rounded-lg">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <!-- Destination City Input -->
-                <div class="col-span-1 md:col-span-2 relative">
-                    <label for="destination" class="block text-white font-bold mb-1">Destination City</label>
-                    <input type="text" id="destination" placeholder="Enter city" class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="showSuggestions()">
-                    <ul id="suggestions" class="absolute bg-white text-black rounded shadow-md w-full max-h-40 overflow-auto hidden"></ul>
-                </div>
-                <!-- Month Input -->
-                <div>
-                    <label for="month" class="block text-white font-bold mb-1">Any Month</label>
-                    <input type="month" id="month" class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <!-- Date Input -->
-                <div>
-                    <label for="date" class="block text-white font-bold mb-1">Short by Date</label>
-                    <input type="date" id="date" class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <!-- Search Button -->
-                <button onclick="searchDestination()" class="px-6 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600 transition self-end">
-                    Search
+            <!-- Hamburger Menu Button -->
+            <div class="block lg:hidden">
+                <button id="menu-toggle" class="text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
                 </button>
             </div>
+
+            <!-- Navigation Links -->
+            <ul id="navbar" class="hidden lg:flex space-x-6 font-bold">
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Home</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Tour</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Booking</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Destination</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Blog</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Gallery</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 text-lg hover:text-gray-900 transition-transform hover:scale-110">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-navbar" class="lg:hidden fixed inset-0 bg-white bg-opacity-90 z-50 hidden">
+        <div class="flex justify-center items-center h-full">
+            <ul class="space-y-6 font-bold text-lg">
+                <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Home</a>
+                </li>
+                <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Tour</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Booking</a></li>
+                <li><a href="#"
+                        class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Destination</a>
+                </li>
+                <li><a href="#" class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Blogs</a>
+                </li>
+                <li><a href="#"
+                        class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Gallery</a></li>
+                <li><a href="#"
+                        class="text-gray-700 hover:text-gray-900 transition-transform hover:scale-110">Contact</a></li>
+            </ul>
         </div>
     </div>
-</section>
 
-<script>
-    // Predefined list of Indian cities
-    const cities = [
-        "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Pune", 
-        "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur", "Patna", "Indore", "Bhopal", "Agra"
-    ];
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileNavbar = document.getElementById('mobile-navbar');
+        const menuLinks = document.querySelectorAll('#mobile-navbar a');
 
-    const destinationInput = document.getElementById('destination');
-    const suggestionsList = document.getElementById('suggestions');
-
-    function showSuggestions() {
-        const query = destinationInput.value.toLowerCase();
-        suggestionsList.innerHTML = '';
-        if (!query) {
-            suggestionsList.classList.add('hidden');
-            return;
-        }
-        const filteredCities = cities.filter(city => city.toLowerCase().startsWith(query));
-        filteredCities.forEach(city => {
-            const listItem = document.createElement('li');
-            listItem.textContent = city;
-            listItem.className = 'cursor-pointer px-4 py-2 hover:bg-gray-200';
-            listItem.onclick = () => {
-                destinationInput.value = city;
-                suggestionsList.classList.add('hidden');
-            };
-            suggestionsList.appendChild(listItem);
+        // Toggle the mobile menu visibility when hamburger button is clicked
+        menuToggle.addEventListener('click', () => {
+            mobileNavbar.classList.toggle('hidden');
         });
-        suggestionsList.classList.remove('hidden');
-    }
 
-    function searchDestination() {
-        const destination = destinationInput.value;
-        const month = document.getElementById('month').value;
-        const date = document.getElementById('date').value;
+        // Close the mobile menu when a link is clicked
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavbar.classList.add('hidden');
+            });
+        });
+    </script>
 
-        if (!destination) {
-            alert('Please enter a destination city');
-            return;
+    <!-- Banner Section -->
+    <section class="relative bg-cover bg-center h-screen"
+        style="background-image: url('https://wallpapershome.com/images/pages/ico_h/4062.jpg');">
+        <div
+            class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center text-white px-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Where do you want to go?</h1>
+            <p class="text-lg md:text-xl mb-8">Trips, experiences, and places. All in one service.</p>
+            <div class="w-full max-w-3xl p-6 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Destination City Input -->
+                    <div class="col-span-1 md:col-span-2 relative">
+                        <label for="destination" class="block text-white font-bold mb-1">Destination City</label>
+                        <input type="text" id="destination" placeholder="Enter city"
+                            class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            oninput="showSuggestions()">
+                        <ul id="suggestions"
+                            class="absolute bg-white text-black rounded shadow-md w-full max-h-40 overflow-auto hidden">
+                        </ul>
+                    </div>
+                    <!-- Month Input -->
+                    <div>
+                        <label for="month" class="block text-white font-bold mb-1">Any Month</label>
+                        <input type="month" id="month"
+                            class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <!-- Date Input -->
+                    <div>
+                        <label for="date" class="block text-white font-bold mb-1">Short by Date</label>
+                        <input type="date" id="date"
+                            class="w-full px-4 py-2 border border-gray-300 rounded text-black font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <!-- Search Button -->
+                    <button onclick="searchDestination()"
+                        class="px-6 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600 transition self-end">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Predefined list of Indian cities
+        const cities = [
+            "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Pune",
+            "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur", "Patna", "Indore", "Bhopal", "Agra"
+        ];
+
+        const destinationInput = document.getElementById('destination');
+        const suggestionsList = document.getElementById('suggestions');
+
+        function showSuggestions() {
+            const query = destinationInput.value.toLowerCase();
+            suggestionsList.innerHTML = '';
+            if (!query) {
+                suggestionsList.classList.add('hidden');
+                return;
+            }
+            const filteredCities = cities.filter(city => city.toLowerCase().startsWith(query));
+            filteredCities.forEach(city => {
+                const listItem = document.createElement('li');
+                listItem.textContent = city;
+                listItem.className = 'cursor-pointer px-4 py-2 hover:bg-gray-200';
+                listItem.onclick = () => {
+                    destinationInput.value = city;
+                    suggestionsList.classList.add('hidden');
+                };
+                suggestionsList.appendChild(listItem);
+            });
+            suggestionsList.classList.remove('hidden');
         }
 
-        const queryString = new URLSearchParams({ destination, month, date }).toString();
-        window.location.href = `destination.html?${queryString}`;
-    }
-</script>
+        function searchDestination() {
+            const destination = destinationInput.value;
+            const month = document.getElementById('month').value;
+            const date = document.getElementById('date').value;
+
+            if (!destination) {
+                alert('Please enter a destination city');
+                return;
+            }
+
+            const queryString = new URLSearchParams({ destination, month, date }).toString();
+            window.location.href = `destination.html?${queryString}`;
+        }
+    </script>
 
 
 
-  <!-- Popular Destinations Section -->
-  <section class="py-16 bg-gray-100">
-    <div class="container mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-4">Popular Destinations</h2>
-        <p class="text-lg text-gray-600 mb-12">World's best tourist destinations</p>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <!-- Popular Destinations Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Popular Destinations</h2>
+            <p class="text-lg text-gray-600 mb-12">World's best tourist destinations</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Ahilya_Ghat_by_the_Ganges%2C_Varanasi.jpg/1200px-Ahilya_Ghat_by_the_Ganges%2C_Varanasi.jpg
+                        alt="Destination 1" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Varanasi Ghat,</h3>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxN0hVwxo9iZYZ8qhrUB0HZY2OKLWPf_Exqg&s
+                        alt="Destination 2" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Golden Temple,Punjab</h3>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxdCFE_xckCJvrP2KWoLX158wtOctwDtaFiw&s
+                        alt="Destination 3" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Taj Mahal,Agra</h3>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy7sB6QjctQzoPcQIIhTuXGmYvlGt6KFDOyg&s
+                        alt="Destination 4" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Red Fort,Delhi</h3>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDY16nVFBN2xYUknkoUqJJJ2xqSC5twZ6-Vg&s
+                        alt="Destination 5" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">ajanta and Ellora Caves,Maharashtra</h3>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src="https://th.bing.com/th/id/OIP.-w2BJ90Jdp2gyIKAokE6egHaE8?w=263&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                        alt="Destination 6" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Tirupati,Andhra Pradesh</h3>
+                    </div>
+                </div>
+                <!-- Card 7 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src="data:image/jpeg;base64,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"
+                        alt="Destination 7" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Vaishno Devi,Jammu and Kashmir</h3>
+                    </div>
+                </div>
+                <!-- Card 8 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <img src="https://th.bing.com/th/id/OIP.FBU_UkdKRSCFAOftJgnzUwHaFj?w=245&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                        alt="Destination 8" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">Bodh Gaya,Bihar</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Value Trips Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Best Value Trips</h2>
+            <p class="text-lg text-gray-600 mb-12">Best offers trips from us</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
+                    <img src="https://img.freepik.com/premium-photo/rajwada-palace-indore_78361-547.jpg" alt="Trip 1"
+                        class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-500 flex items-center">
+                                ⭐⭐⭐⭐⭐
+                                <span class="ml-1">(4 reviews)</span>
+                            </span>
+                            <span class="text-sm text-gray-500 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z">
+                                    </path>
+                                </svg>
+                                5 days
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">French Autumn</h3>
+                        <p class="text-gray-600 text-sm mb-4">City Tours, Urban</p>
+                        <div class="text-red-500 text-xl font-bold">$499</div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
+                    <img src="https://www.mptourism.com/images/point-of-interest/indore-poi5.webp" alt="Trip 2"
+                        class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-500 flex items-center">
+                                ⭐⭐⭐⭐⭐
+                                <span class="ml-1">(8 reviews)</span>
+                            </span>
+                            <span class="text-sm text-gray-500 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z">
+                                    </path>
+                                </svg>
+                                7 days
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Swiss Adventure</h3>
+                        <p class="text-gray-600 text-sm mb-4">Mountains, Lakes</p>
+                        <div class="text-red-500 text-xl font-bold">$899</div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
+                    <img src="https://www.mptourism.com/images/point-of-interest/indore-poi5.webp" alt="Trip 3"
+                        class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-500 flex items-center">
+                                ⭐⭐⭐⭐
+                                <span class="ml-1">(10 reviews)</span>
+                            </span>
+                            <span class="text-sm text-gray-500 flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z">
+                                    </path>
+                                </svg>
+                                10 days
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Italian Romance</h3>
+                        <p class="text-gray-600 text-sm mb-4">Historic Sites, Cuisine</p>
+                        <div class="text-red-500 text-xl font-bold">$1299</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center">
+            <!-- Why Choose Us Header -->
+            <h2 class="text-4xl font-semibold mb-6">Why Choose Us</h2>
+            <p class="text-lg mb-12">Here are reasons you should plan your trip with us</p>
+
+            <!-- Logos and Descriptions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- First Logo Section -->
+                <div class="flex flex-col items-center">
+                    <div class="mb-4">
+                        <!-- Replace with your logo image -->
+                        <img src="https://png.pngtree.com/png-vector/20230413/ourmid/pngtree-3d-location-icon-clipart-in-transparent-background-vector-png-image_6704161.png"
+                            alt="Handpicked Hotels" class="w-20 h-20" />
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Handpicked Hotels</h3>
+                    <p class="text-gray-600">
+                        Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean
+                        massa.
+                    </p>
+                </div>
+
+                <!-- Second Logo Section -->
+                <div class="flex flex-col items-center">
+                    <div class="mb-4">
+                        <!-- Replace with your logo image -->
+                        <img src="https://cdn4.iconfinder.com/data/icons/dollar-trading-1-1/512/xxx003-512.png"
+                            alt="Affordable Flights" class="w-20 h-20" />
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Affordable Flights</h3>
+                    <p class="text-gray-600">
+                        Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean
+                        massa.
+                    </p>
+                </div>
+
+                <!-- Third Logo Section -->
+                <div class="flex flex-col items-center">
+                    <div class="mb-4">
+                        <!-- Replace with your logo image -->
+                        <img src="https://clipartix.com/wp-content/uploads/2016/04/Bus-clip-art-bus-clipart-photo-clipartbold-3.png"
+                            alt="Convenient Transport" class="w-20 h-20" />
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Convenient Transport</h3>
+                    <p class="text-gray-600">
+                        Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean
+                        massa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles & Tips Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto text-center mb-12">
+            <h2 class="text-5xl font-bold text-gray-800">Articles &amp; Tips</h2>
+            <p class="text-lg text-gray-600 mt-4">Explore some of the best tips from around the world</p>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 container mx-auto px-4">
             <!-- Card 1 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src=https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Ahilya_Ghat_by_the_Ganges%2C_Varanasi.jpg/1200px-Ahilya_Ghat_by_the_Ganges%2C_Varanasi.jpg alt="Destination 1" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 1</h3>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 1"
+                    class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 1: Travel Smart</h3>
+                    <p class="text-gray-600">Learn how to make the most of your travels with tips on budgeting, packing,
+                        and exploring new places efficiently.</p>
                 </div>
             </div>
+
             <!-- Card 2 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 2" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination second</h3>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 2"
+                    class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 2: Find Hidden Gems</h3>
+                    <p class="text-gray-600">Discover off-the-beaten-path destinations that offer a unique and authentic
+                        experience away from the crowds.</p>
                 </div>
             </div>
+
             <!-- Card 3 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 3" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination Third</h3>
-                </div>
-            </div>
-            <!-- Card 4 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 4" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 4</h3>
-                </div>
-            </div>
-            <!-- Card 5 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 5" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 5</h3>
-                </div>
-            </div>
-            <!-- Card 6 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 6" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 6</h3>
-                </div>
-            </div>
-            <!-- Card 7 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 7" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 7</h3>
-                </div>
-            </div>
-            <!-- Card 8 -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
-                <img src="https://i.pinimg.com/originals/a2/51/16/a25116509e3645b04e24e0f65e89a463.jpg" alt="Destination 8" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-xl font-bold text-gray-800">Destination 8</h3>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 3"
+                    class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 3: Pack Light & Smart</h3>
+                    <p class="text-gray-600">Get the best packing advice for your next trip and learn how to travel with
+                        just the essentials to avoid overpacking.</p>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Best Value Trips Section -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-4">Best Value Trips</h2>
-        <p class="text-lg text-gray-600 mb-12">Best offers trips from us</p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Card 1 -->
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
-                <img src="https://img.freepik.com/premium-photo/rajwada-palace-indore_78361-547.jpg" alt="Trip 1" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-500 flex items-center">
-                            ⭐⭐⭐⭐⭐
-                            <span class="ml-1">(4 reviews)</span>
-                        </span>
-                        <span class="text-sm text-gray-500 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z"></path></svg>
-                            5 days
-                        </span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">French Autumn</h3>
-                    <p class="text-gray-600 text-sm mb-4">City Tours, Urban</p>
-                    <div class="text-red-500 text-xl font-bold">$499</div>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
-                <img src="https://www.mptourism.com/images/point-of-interest/indore-poi5.webp" alt="Trip 2" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-500 flex items-center">
-                            ⭐⭐⭐⭐⭐
-                            <span class="ml-1">(8 reviews)</span>
-                        </span>
-                        <span class="text-sm text-gray-500 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z"></path></svg>
-                            7 days
-                        </span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Swiss Adventure</h3>
-                    <p class="text-gray-600 text-sm mb-4">Mountains, Lakes</p>
-                    <div class="text-red-500 text-xl font-bold">$899</div>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition">
-                <img src="https://www.mptourism.com/images/point-of-interest/indore-poi5.webp" alt="Trip 3" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-500 flex items-center">
-                            ⭐⭐⭐⭐
-                            <span class="ml-1">(10 reviews)</span>
-                        </span>
-                        <span class="text-sm text-gray-500 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.3 0-2.6-.2-3.8-.6-1.2-.4-2.4-1-3.5-1.6C3.2 5.2 2 4.1 2 3v6c0 2.2.8 4.3 2.3 6C6 17 9 18.7 12 20.3s6-1.3 8-4c1.5-1.7 2.3-3.8 2.3-6V3c0 1-.8 2.1-2.3 2.8-1.1.6-2.3 1.2-3.5 1.6-1.3.4-2.6.6-3.8.6z"></path></svg>
-                            10 days
-                        </span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Italian Romance</h3>
-                    <p class="text-gray-600 text-sm mb-4">Historic Sites, Cuisine</p>
-                    <div class="text-red-500 text-xl font-bold">$1299</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
 
-<section class="py-16 bg-gray-100">
-    <div class="container mx-auto text-center">
-      <!-- Why Choose Us Header -->
-      <h2 class="text-4xl font-semibold mb-6">Why Choose Us</h2>
-      <p class="text-lg mb-12">Here are reasons you should plan your trip with us</p>
-  
-      <!-- Logos and Descriptions -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-        <!-- First Logo Section -->
-        <div class="flex flex-col items-center">
-          <div class="mb-4">
-            <!-- Replace with your logo image -->
-            <img src="https://png.pngtree.com/png-vector/20230413/ourmid/pngtree-3d-location-icon-clipart-in-transparent-background-vector-png-image_6704161.png" alt="Handpicked Hotels" class="w-20 h-20" />
-          </div>
-          <h3 class="text-2xl font-semibold mb-2">Handpicked Hotels</h3>
-          <p class="text-gray-600">
-            Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-          </p>
-        </div>
-  
-        <!-- Second Logo Section -->
-        <div class="flex flex-col items-center">
-          <div class="mb-4">
-            <!-- Replace with your logo image -->
-            <img src="https://cdn4.iconfinder.com/data/icons/dollar-trading-1-1/512/xxx003-512.png" alt="Affordable Flights" class="w-20 h-20" />
-          </div>
-          <h3 class="text-2xl font-semibold mb-2">Affordable Flights</h3>
-          <p class="text-gray-600">
-            Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-          </p>
-        </div>
-  
-        <!-- Third Logo Section -->
-        <div class="flex flex-col items-center">
-          <div class="mb-4">
-            <!-- Replace with your logo image -->
-            <img src="https://clipartix.com/wp-content/uploads/2016/04/Bus-clip-art-bus-clipart-photo-clipartbold-3.png" alt="Convenient Transport" class="w-20 h-20" />
-          </div>
-          <h3 class="text-2xl font-semibold mb-2">Convenient Transport</h3>
-          <p class="text-gray-600">
-            Lorem ipsum dolor sit amet, consect adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-<!-- Articles & Tips Section -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto text-center mb-12">
-      <h2 class="text-5xl font-bold text-gray-800">Articles &amp; Tips</h2>
-      <p class="text-lg text-gray-600 mt-4">Explore some of the best tips from around the world</p>
-    </div>
-    
-    <!-- Cards Container -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 container mx-auto px-4">
-      <!-- Card 1 -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 1" class="w-full h-64 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 1: Travel Smart</h3>
-          <p class="text-gray-600">Learn how to make the most of your travels with tips on budgeting, packing, and exploring new places efficiently.</p>
-        </div>
-      </div>
-  
-      <!-- Card 2 -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 2" class="w-full h-64 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 2: Find Hidden Gems</h3>
-          <p class="text-gray-600">Discover off-the-beaten-path destinations that offer a unique and authentic experience away from the crowds.</p>
-        </div>
-      </div>
-  
-      <!-- Card 3 -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="https://wallpapersok.com/images/high/travel-4k-japan-fuji-8tuep3c86h4lngec.jpg" alt="Card 3" class="w-full h-64 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Tip 3: Pack Light & Smart</h3>
-          <p class="text-gray-600">Get the best packing advice for your next trip and learn how to travel with just the essentials to avoid overpacking.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  
-  
-<!-- Footer Section -->
-<footer class="bg-black text-white py-16">
-    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Left Side: Award and Short Paragraph -->
-      <div class="flex flex-col justify-center items-start">
-        <h3 class="text-3xl font-semibold mb-4">Award</h3>
-        <p class="text-gray-400">We are recognized as one of the top travel agencies with awards for excellent customer service and unforgettable experiences.</p>
-      </div>
-  
-      <!-- Center Side: Contact Info, Location, Social Icons -->
-      <div class="flex flex-col justify-center items-center">
-        <h3 class="text-3xl font-semibold mb-4">Contact Info</h3>
-        <p class="text-gray-400 mb-4">123 Travel Street, City, Country</p>
-        <p class="text-gray-400 mb-4">+123 456 7890</p>
-        <p class="text-gray-400 mb-4">info@travel.com</p>
-  
-        <div class="flex space-x-4 mt-4">
-          <!-- Social Icons -->
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-  
-     <!-- Right Side: Recent Trips (6 Small Images) -->
-<div class="flex flex-col justify-center items-center text-center">
-    <h3 class="text-3xl font-semibold mb-4">Recent Trips</h3>
-    <div class="grid grid-cols-3 gap-4">
-      <!-- Image 1 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 1" class="w-full h-24 object-cover rounded-md">
-      <!-- Image 2 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 2" class="w-full h-24 object-cover rounded-md">
-      <!-- Image 3 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 3" class="w-full h-24 object-cover rounded-md">
-      <!-- Image 4 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 4" class="w-full h-24 object-cover rounded-md">
-      <!-- Image 5 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 5" class="w-full h-24 object-cover rounded-md">
-      <!-- Image 6 -->
-      <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 6" class="w-full h-24 object-cover rounded-md">
-    </div>
-  </div>
-  
-    </div>
-  
-    <div class="text-center mt-8">
-        <p class="text-gray-400 text-sm">© 2024 Copy Right By  <span class="text-lg font-semibold  text-red-500">Siddharth Soni</span>.</p>
+    <!-- Footer Section -->
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Left Side: Award and Short Paragraph -->
+            <div class="flex flex-col justify-center items-start">
+                <h3 class="text-3xl font-semibold mb-4">Award</h3>
+                <p class="text-gray-400">We are recognized as one of the top travel agencies with awards for excellent
+                    customer service and unforgettable experiences.</p>
+            </div>
 
-    </div>
-  </footer>
-  
+            <!-- Center Side: Contact Info, Location, Social Icons -->
+            <div class="flex flex-col justify-center items-center">
+                <h3 class="text-3xl font-semibold mb-4">Contact Info</h3>
+                <p class="text-gray-400 mb-4">123 Travel Street, City, Country</p>
+                <p class="text-gray-400 mb-4">+123 456 7890</p>
+                <p class="text-gray-400 mb-4">info@travel.com</p>
+
+                <div class="flex space-x-4 mt-4">
+                    <!-- Social Icons -->
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Right Side: Recent Trips (6 Small Images) -->
+            <div class="flex flex-col justify-center items-center text-center">
+                <h3 class="text-3xl font-semibold mb-4">Recent Trips</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- Image 1 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 1"
+                        class="w-full h-24 object-cover rounded-md">
+                    <!-- Image 2 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 2"
+                        class="w-full h-24 object-cover rounded-md">
+                    <!-- Image 3 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 3"
+                        class="w-full h-24 object-cover rounded-md">
+                    <!-- Image 4 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 4"
+                        class="w-full h-24 object-cover rounded-md">
+                    <!-- Image 5 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 5"
+                        class="w-full h-24 object-cover rounded-md">
+                    <!-- Image 6 -->
+                    <img src="https://wallpapers.com/images/hd/travel-4k-volcano-ynlmn2hmts0n7gsw.jpg" alt="Trip 6"
+                        class="w-full h-24 object-cover rounded-md">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-gray-400 text-sm">© 2024 Copy Right By <span
+                    class="text-lg font-semibold  text-red-500">Siddharth Soni</span>.</p>
+
+        </div>
+    </footer>
+
 </body>
+
 </html>
