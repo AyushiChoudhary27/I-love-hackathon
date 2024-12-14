@@ -93,10 +93,10 @@
         <!-- Destination Packages -->
         <section>
             <h3 class="text-xl font-bold mb-6">Available Packages</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Example Card -->
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6">
+                <!-- Example Cards -->
                 <div class="bg-white rounded-lg shadow p-4">
-                    <img src="https://www.momondo.in/himg/7e/a0/d3/ice-191475462-64878787_3XL-131953.jpg" alt="Destination" class="w-full rounded mb-4">
+                    <img src="https://via.placeholder.com/300x200" alt="Destination" class="w-full rounded mb-4">
                     <h4 class="text-lg font-bold mb-2">5-Day Tour of <span id="destinationName"></span></h4>
                     <p class="text-gray-600 mb-2">Distance: <span id="distance">Calculating...</span></p>
                     <p class="text-gray-600 mb-4"><strong>Price: ₹10,000/person</strong></p>
@@ -106,31 +106,25 @@
                         <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition w-full">Book Bus</button>
                     </div>
                 </div>
-            </div>
-        </section>
-    
 
-    <section>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Example Card -->
-            <div class="bg-white rounded-lg shadow p-4">
-                <img src="https://www.momondo.in/himg/7e/a0/d3/ice-191475462-64878787_3XL-131953.jpg" alt="Destination" class="w-full rounded mb-4">
-                <h4 class="text-lg font-bold mb-2">5-Day Tour of <span id="destinationName"></span></h4>
-                <p class="text-gray-600 mb-2">Distance: <span id="distance">Calculating...</span></p>
-                <p class="text-gray-600 mb-4"><strong>Price: ₹10,000/person</strong></p>
-                <div class="border-t pt-4">
-                    <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='flightBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Flight</button>
-                    <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='carBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Car</button>
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition w-full">Book Bus</button>
+                <!-- Duplicate this structure for more cards -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <img src="https://via.placeholder.com/300x200" alt="Destination" class="w-full rounded mb-4">
+                    <h4 class="text-lg font-bold mb-2">3-Day Adventure of <span id="destinationName"></span></h4>
+                    <p class="text-gray-600 mb-2">Distance: <span id="distance">Calculating...</span></p>
+                    <p class="text-gray-600 mb-4"><strong>Price: ₹7,500/person</strong></p>
+                    <div class="border-t pt-4">
+                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='flightBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Flight</button>
+                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='carBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Car</button>
+                        <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition w-full">Book Bus</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 
-<footer class="bg-blue-600 text-white py-4 text-center">
-    <p>&copy; 2024 Travel Explorer. All Rights Reserved.</p>
-</footer>
+    <footer class="bg-blue-600 text-white py-4 text-center">
+        <p>&copy; 2024 Travel Explorer. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
