@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #007bff;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .job-list {
+            margin-top: 20px;
+        }
+        .job-item {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .job-item:hover {
+            background: #e9ecef;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Job Portal</h1>
+</header>
+
+<div class="container">
+    <h2>Find Your Dream Job</h2>
+    <input type="text" id="location" placeholder="Enter your location...">
+    <button onclick="findJobs()">Find Jobs</button>
+
+    <div class="job-list" id="jobList"></div>
+</div>
+
+<!-- Modal -->
+<div id="jobModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="jobTitle"></h2>
+        <p id="jobDescription"></p>
+    </div>
+</div>
+
+<script>
+    function findJobs() {
+        const location = document.getElementById('location').value;
+        const jobList = document.getElementById('jobList');
+        jobList.innerHTML = ''; // Clear previous results
+
+        // Sample job data (in a real application, this would come from a server)
+        const jobs = [
+            { title: 'Software Engineer', description: 'Develop and maintain software applications.', location: 'New York' },
+            { title: 'Data Analyst', description: 'Analyze data and provide insights.', location: 'San Francisco' },
+            { title: 'Web Developer', description: 'Build and maintain websites.', location: 'Los Angeles' },
+            { title: 'Project Manager', description: 'Manage projects and teams.', location: 'New York' }
+        ];
+
+        const filteredJobs = jobs.filter(job => job.location.toLowerCase().includes(location.toLowerCase()));
+
+        if (filteredJobs.length === 0) {
+            jobList.innerHTML = '<p>No jobs found for this location.</p>';
+        } else {
+            filteredJobs.forEach(job => {
+                const jobItem = document.createElement('div');
+                jobItem.className = 'job-item';
+                jobItem.innerHTML = `<strong>${job.title}</strong> - ${job.location}`;
+                jobItem.onclick = () => showJobDetails(job);
+                jobList.appendChild(jobItem);
+            });
+        }
+    }
+
+    function showJobDetails(job) {
+        document.getElementById('jobTitle').innerText = job.title;
+        document.getElementById('jobDescription').innerText = job.description;
+        document.getElementById('jobModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('jobModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('jobModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>

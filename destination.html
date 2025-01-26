@@ -3,125 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destination Details</title>
+    <title>Location and Course Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <script>
         // Parse query parameters
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                destination: params.get('destination') || 'Unknown Destination',
-                month: params.get('month') || 'Any Month',
-                date: params.get('date') || 'Any Date'
+                city: params.get('city') || 'Unknown City',
+                course: params.get('course') || 'Unknown Course',
             };
         }
 
-        // Initialize Google Maps services
-        function initGoogleServices(destination) {
-            const service = new google.maps.DistanceMatrixService();
-            const hotelService = new google.maps.places.PlacesService(document.createElement('div'));
+        // Display course details
+        function displayCourseDetails() {
+            const { city, course } = getQueryParams();
+            document.getElementById('cityName').textContent = city;
+            document.getElementById('courseName').textContent = course;
 
-            // Calculate Distance
-            service.getDistanceMatrix(
+            // For demo purposes, add mock course data based on city and course.
+            const courseList = document.getElementById('courses');
+            const courses = [
                 {
-                    origins: ["New Delhi"], // Replace with user's location dynamically
-                    destinations: [destination],
-                    travelMode: google.maps.TravelMode.DRIVING
+                    city: "New Delhi",
+                    course: "Software Engineering Basics",
+                    img: "https://via.placeholder.com/200",
+                    price: "₹20,000",
+                    description: "A comprehensive introduction to Software Engineering concepts."
                 },
-                (response, status) => {
-                    if (status === google.maps.DistanceMatrixStatus.OK) {
-                        const distance = response.rows[0].elements[0].distance.text;
-                        document.getElementById('distance').textContent = distance;
-                    }
-                }
-            );
+                {
+                    city: "Bangalore",
+                    course: "Machine Learning with Python",
+                    img: "https://via.placeholder.com/200",
+                    price: "₹25,000",
+                    description: "Learn the fundamentals of Machine Learning using Python."
+                },
+                // Add more courses here based on city
+            ];
 
-            // Fetch Nearby Hotels
-            const request = {
-                query: `${destination} hotels`,
-                fields: ['name', 'rating', 'geometry'],
-            };
+            // Filter courses based on city and course
+            const filteredCourses = courses.filter(c => c.city === city && c.course === course);
 
-            hotelService.findPlaceFromQuery(request, (results, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    const hotelList = document.getElementById('hotels');
-                    results.forEach((hotel) => {
-                        const hotelItem = document.createElement('li');
-                        hotelItem.textContent = `${hotel.name} (${hotel.rating || 'N/A'}⭐)`;
-                        hotelList.appendChild(hotelItem);
-                    });
-                }
+            // Display the courses
+            filteredCourses.forEach(course => {
+                const courseItem = document.createElement('li');
+                courseItem.classList.add('bg-white', 'rounded-lg', 'shadow', 'p-4', 'mb-4', 'flex', 'flex-col', 'items-center');
+                courseItem.innerHTML = `
+                    <img src="${course.img}" alt="${course.course}" class="w-full h-48 object-cover rounded mb-4">
+                    <h4 class="text-lg font-bold mb-2 text-center">${course.course}</h4>
+                    <p class="text-gray-600 mb-2 text-center">Price: <strong>${course.price}</strong></p>
+                    <p class="text-gray-600 mb-4 text-center">${course.description}</p>
+                `;
+                courseList.appendChild(courseItem);
             });
         }
 
-        // Display search results
-        function displayResults() {
-            const { destination, month, date } = getQueryParams();
-            document.getElementById('destinationName').textContent = destination;
-            document.getElementById('monthValue').textContent = month === 'Any Month' ? 'Any Month' : new Date(month).toLocaleString('default', { month: 'long', year: 'numeric' });
-            document.getElementById('dateValue').textContent = date === 'Any Date' ? 'Any Date' : new Date(date).toLocaleDateString();
+        // Handle form submission and page refresh
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const city = document.getElementById('city').value;
+            const course = document.getElementById('course').value;
 
-            initGoogleServices(destination);
+            // Update the URL with query parameters and reload to show results
+            const newUrl = window.location.pathname + '?city=' + encodeURIComponent(city) + '&course=' + encodeURIComponent(course);
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            displayCourseDetails();
         }
 
-        window.onload = displayResults;
+        window.onload = displayCourseDetails;
     </script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <header class="bg-blue-600 text-white py-4">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-3xl font-bold">Destination Details</h1>
+            <h1 class="text-3xl font-bold">Select Location and Course</h1>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-8">
-        <!-- Destination Details -->
-        <div class="bg-white rounded shadow p-6 mb-8">
-            <h2 class="text-2xl font-bold mb-4" id="destinationName"></h2>
-            <p class="text-lg"><strong>Month: </strong><span id="monthValue"></span></p>
-            <p class="text-lg"><strong>Date: </strong><span id="dateValue"></span></p>
-            <p class="text-lg"><strong>Distance: </strong><span id="distance">Calculating...</span></p>
+        <!-- Location and Course Selection -->
+        <div id="courseFormContainer" class="bg-white rounded shadow p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Choose a City and Course</h2>
+            <form id="courseForm" onsubmit="handleFormSubmit(event)">
+                <div class="mb-4">
+                    <label for="city" class="block text-lg font-medium">Select City</label>
+                    <select id="city" name="city" class="w-full p-2 border border-gray-300 rounded">
+                        <option value="New Delhi">New Delhi</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Chennai">Chennai</option>
+                        <!-- Add more cities here -->
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="course" class="block text-lg font-medium">Select Course</label>
+                    <select id="course" name="course" class="w-full p-2 border border-gray-300 rounded">
+                        <option value="Software Engineering Basics">Software Engineering Basics</option>
+                        <option value="Advanced Java Programming">Advanced Java Programming</option>
+                        <option value="Machine Learning with Python">Machine Learning with Python</option>
+                        <option value="Web Development with Node.js">Web Development with Node.js</option>
+                        <!-- Add more courses here -->
+                    </select>
+                </div>
+
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 w-full">Search</button>
+            </form>
         </div>
 
-        <!-- Hotels Nearby -->
-        <section class="mb-8">
-            <h3 class="text-xl font-bold mb-4">Nearby Hotels</h3>
-            <ul id="hotels" class="list-disc pl-5 text-gray-700"></ul>
-        </section>
+        <!-- Display Course Details based on City and Course -->
+        <div id="courseDetailsContainer" class="bg-white rounded shadow p-6">
+            <h2 class="text-2xl font-bold mb-4" id="cityName"></h2>
+            <p class="text-lg"><strong>Course: </strong><span id="courseName"></span></p>
 
-        <!-- Destination Packages -->
-        <section>
-            <h3 class="text-xl font-bold mb-6">Available Packages</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                <!-- Example Card -->
-                <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center">
-                    <img src="https://www.momondo.in/himg/7e/a0/d3/ice-191475462-64878787_3XL-131953.jpg" alt="Destination" class="w-full h-48 object-cover rounded mb-4">
-                    <h4 class="text-lg font-bold mb-2 text-center">5-Day Tour of <span id="destinationName"></span></h4>
-                    <p class="text-gray-600 mb-2 text-center">Distance: <span id="distance">Calculating...</span></p>
-                    <p class="text-gray-600 mb-4 text-center"><strong>Price: ₹10,000/person</strong></p>
-                    <div class="border-t pt-4 w-full">
-                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='flightBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Flight</button>
-                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='carBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Car</button>
-                        <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition w-full mb-2" onclick="window.location.href='bus.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Bus</button>
-                    </div>
-                </div>
-
-                <!-- Duplicate for additional cards -->
-                <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center">
-                    <img src="https://cdn.tatlerasia.com/asiatatler/i/hk/2021/07/07032140-most-expensive-hotel-rooms-suites-in-the-world-wilson3_cover_2000x1334.jpeg" alt="Destination" class="w-full h-48 object-cover rounded mb-4">
-                    <h4 class="text-lg font-bold mb-2 text-center">3-Day Adventure of <span id="destinationName"></span></h4>
-                    <p class="text-gray-600 mb-2 text-center">Distance: <span id="distance">Calculating...</span></p>
-                    <p class="text-gray-600 mb-4 text-center"><strong>Price: ₹7,500/person</strong></p>
-                    <div class="border-t pt-4 w-full">
-                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='flightBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Flight</button>
-                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition w-full mb-2" onclick="window.location.href='carBooking.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">Book Car</button>
-                
-                        <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition w-full mb-2" onclick="window.location.href='bus.html?destination='+encodeURIComponent(document.getElementById('destinationName').textContent);">>Book Bus</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <section class="mt-6">
+                <h3 class="text-xl font-bold mb-6">Available Courses in Your City</h3>
+                <ul id="courses" class="list-none pl-0"></ul>
+            </section>
+        </div>
     </main>
 
     <footer class="bg-blue-600 text-white py-4 text-center">
